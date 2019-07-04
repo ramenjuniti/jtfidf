@@ -3,6 +3,7 @@
 [![GoDoc](http://godoc.org/github.com/fabioberger/chrome?status.svg)](https://godoc.org/github.com/ramenjuniti/jtfidf)
 [![CircleCI](https://circleci.com/gh/ramenjuniti/jtfidf.svg?style=svg)](https://circleci.com/gh/ramenjuniti/jtfidf)
 [![Go Report Card](https://goreportcard.com/badge/github.com/ramenjuniti/jtfidf)](https://goreportcard.com/report/github.com/ramenjuniti/jtfidf)
+[![codecov](https://codecov.io/gh/ramenjuniti/jtfidf/branch/master/graph/badge.svg)](https://codecov.io/gh/ramenjuniti/jtfidf)
 
 Package jtfidf provides calculations of TF(Term Frequency), IDF(Inverse Document Frequency) and TF-IDF values at Japanese documents.
 
