@@ -16,7 +16,7 @@ go get -u github.com/ramenjuniti/jtfidf
 
 ## Usage
 
-All usage are described in [GoDoc](https://godoc.org/github.com/ramenjuniti/jtfidf)
+All usage are described in [GoDoc](https://godoc.org/github.com/ramenjuniti/jtfidf).
 
 ## License
 
