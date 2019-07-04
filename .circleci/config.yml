@@ -10,7 +10,7 @@ jobs:
       - run:
           name: install
           command: |
-            go get github.com/ikawaha/kagome/...
+            go get github.com/ramenjuniti/jtfidf
       - run:
           name: test
           command: |
