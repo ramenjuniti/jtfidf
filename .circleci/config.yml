@@ -22,6 +22,6 @@ jobs:
       - run:
           name: test
           command: |
-            go test -v -cover -coverprofile=coverage.txt github.com/ramenjuniti/jtfidf
+            go test -v -cover -coverprofile=profile github.com/ramenjuniti/jtfidf
       - codecov/upload:
-          file: /home/circleci/go/src/github.com/ramenjuniti/jtfidf/coverage.txt
+          file: /home/circleci/go/src/github.com/ramenjuniti/jtfidf/profile
