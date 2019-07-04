@@ -24,4 +24,4 @@ jobs:
           command: |
             go test -v -cover -coverprofile=coverage.out github.com/ramenjuniti/jtfidf
       - codecov/upload:
-          file: ./coverage.out
+          file: /home/circleci/go/src/github.com/ramenjuniti/jtfidf/coverage.out
