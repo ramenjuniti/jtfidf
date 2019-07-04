@@ -6,6 +6,8 @@ jobs:
     environment:
       - GOROOT: /usr/local/go
     working_directory: /home/circleci/go/src/github.com/ramenjuniti/jtfidf
+    orbs:
+      codecov: codecov/codecov@1.0.4
     steps:
       - run:
           name: install
@@ -14,4 +16,6 @@ jobs:
       - run:
           name: test
           command: |
-            go test -v -cover github.com/ramenjuniti/jtfidf
+            go test -v -cover -coverprofile=coverage.out github.com/ramenjuniti/jtfidf
+      - codecov/upload:
+          file: ./coverage.out
