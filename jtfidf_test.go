@@ -74,9 +74,9 @@ var tfCases = []struct {
 		d:    "寿司が食べたい。寿司は好きです。",
 		want: map[string]float64{
 			"寿司": 0.2,
-			"が":  0.2,
-			"食べ": 0.2,
-			"たい": 0.2,
+			"が":  0.1,
+			"食べ": 0.1,
+			"たい": 0.1,
 			"。":  0.2,
 			"は":  0.1,
 			"好き": 0.1,
@@ -286,7 +286,7 @@ func ExampleAllTfidf() {
 	ds := []string{
 		"寿司が食べたい。",
 	}
-	fmt.Println(AllIdf(ds))
+	fmt.Println(AllTfidf(ds))
 	// Output: map[。:0.2 が:0.2 たい:0.2 寿司:0.2 食べ:0.2]
 }
 
