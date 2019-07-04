@@ -8,10 +8,6 @@ jobs:
     working_directory: /home/circleci/go/src/github.com/ramenjuniti/jtfidf
     steps:
       - run:
-          name: install
-          command: |
-            go get -u github.com/ramenjuniti/jtfidf
-      - run:
           name: test
           command: |
             go test -v ./...
