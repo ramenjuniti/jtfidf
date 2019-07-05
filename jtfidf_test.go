@@ -145,11 +145,11 @@ var idfCases = []struct {
 			"寿司が食べたい。",
 		},
 		want: map[string]float64{
-			"寿司": 1,
-			"が":  1,
-			"食べ": 1,
-			"たい": 1,
-			"。":  1,
+			"寿司": 0,
+			"が":  0,
+			"食べ": 0,
+			"たい": 0,
+			"。":  0,
 		},
 	},
 	{
@@ -159,11 +159,11 @@ var idfCases = []struct {
 			"寿司が食べたい。",
 		},
 		want: map[string]float64{
-			"寿司": 1,
-			"が":  1,
-			"食べ": 1,
-			"たい": 1,
-			"。":  1,
+			"寿司": 0,
+			"が":  0,
+			"食べ": 0,
+			"たい": 0,
+			"。":  0,
 		},
 	},
 	{
@@ -198,7 +198,7 @@ func ExampleAllIdf() {
 		"寿司が食べたい。",
 	}
 	fmt.Println(AllIdf(ds))
-	// Output: map[。:1 が:1 たい:1 寿司:1 食べ:1]
+	// Output: map[。:0 が:0 たい:0 寿司:0 食べ:0]
 }
 
 func TestIdf(t *testing.T) {
@@ -220,7 +220,7 @@ func ExampleIdfValue_Idf() {
 	}
 	idfs := NewIdf(ds)
 	fmt.Println(idfs.Idf("寿司"))
-	// Output: 1
+	// Output: 0
 }
 
 var tfidfCases = []struct {

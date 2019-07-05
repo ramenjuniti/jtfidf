@@ -98,7 +98,7 @@ func AllIdf(ds []string) map[string]float64 {
 			}
 		}
 		if _, ok := idfs[term]; !ok {
-			idfs[term] = math.Log(float64(n)/float64(df)) + 1
+			idfs[term] = math.Log(float64(n) / float64(df))
 		}
 	}
 
@@ -112,7 +112,7 @@ func AllTfidf(ds []string) map[string]float64 {
 
 	for _, d := range ds {
 		for term, tf := range AllTf(d) {
-			tfidfs[term] = tf * idfs[term]
+			tfidfs[term] = tf * (idfs[term] + 1)
 		}
 	}
 
