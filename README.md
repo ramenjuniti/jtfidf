@@ -46,7 +46,7 @@ func ExampleAllIdf() {
 		"寿司が食べたい。",
 	}
 	fmt.Println(AllIdf(ds))
-	// Output: map[。:1 が:1 たい:1 寿司:1 食べ:1]
+	// Output: map[。:0 が:0 たい:0 寿司:0 食べ:0]
 }
 ```
 
@@ -59,7 +59,7 @@ func ExampleIdfValue_Idf() {
 	}
 	idfs := NewIdf(ds)
 	fmt.Println(idfs.Idf("寿司"))
-	// Output: 1
+	// Output: 0
 }
 ```
 
