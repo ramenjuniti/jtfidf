@@ -14,10 +14,10 @@ jobs:
     executor: go-112
     steps:
       - checkout
-      # golint
       - restore_cache:
           keys:
             - golint
+            - kagome
       - run:
           name: Checking golint
           command: |
@@ -29,7 +29,14 @@ jobs:
           key: golint
           paths:
             - /go/bin/golint
-      # go test
+      - run:
+          name: install
+          command: |
+            go get -u github.com/ikawaha/kagome/...
+      - save_cache:
+          key: kagome
+          paths:
+            - /go/src/github.com/ikawaha/kagome
       - run:
           name: Testing
           command: |
