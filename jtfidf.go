@@ -3,7 +3,13 @@
 /*
 Package jtfidf provides calculations of TF(Term Frequency), IDF(Inverse Document Frequency) and TF-IDF values at Japanese documents.
 
+Dependencies
+
 Package jtfidf use https://github.com/ikawaha/kagome as Morphological Analyzer.
+
+TF-IDF
+
+The reason why 1 is added to the IDF value of TF-IDF is to prevent the TF-IDF value from becoming 0.
 */
 package jtfidf
 
