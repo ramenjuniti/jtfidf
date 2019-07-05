@@ -4,9 +4,7 @@ executors:
   go-112:
     docker:
       - image: circleci/golang:1.12
-    environment:
-      - GOROOT: /usr/local/go
-    working_directory: /home/circleci/go/src/github.com/ramenjuniti/jtfidf
+    working_directory: /go/src/github.com/ramenjuniti/jtfidf
 
 orbs:
   codecov: codecov/codecov@1.0.5
@@ -15,13 +13,26 @@ jobs:
   build:
     executor: go-112
     steps:
+      - checkout
+      # golint
+      - restore_cache:
+          keys:
+            - golint
       - run:
-          name: install
+          name: Checking golint
           command: |
-            go get github.com/ramenjuniti/jtfidf
+            if ! type golint >/dev/null 2>&1; then
+              go get -u golang.org/x/lint/golint
+            fi
+            golint -set_exit_status ./...
+      - save_cache:
+          key: golint
+          paths:
+            - /go/bin/golint
+      # go test
       - run:
-          name: test
+          name: Testing
           command: |
-            go test -v -race -cover -coverprofile=coverage.out github.com/ramenjuniti/jtfidf
+            go test -v -race -cover -coverprofile=coverage.out ./...
       - codecov/upload:
           file: ./coverage.out
