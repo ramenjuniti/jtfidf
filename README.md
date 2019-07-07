@@ -28,6 +28,8 @@ All usage are described in [GoDoc](https://godoc.org/github.com/ramenjuniti/jtfi
 
 ### AllTf
 
+AllTf returns all TF values in a doucument.
+
 ```go
 func ExampleAllTf() {
 	fmt.Println(AllTf("寿司が食べたい。"))
@@ -37,15 +39,18 @@ func ExampleAllTf() {
 
 ### Tf
 
+Tf returns TF value in a document.
+
 ```go
-func ExampleTfValue_Tf() {
-	tfs := NewTf("寿司を食べたい。")
-	fmt.Println(tfs.Tf("寿司"))
+func ExampleTf() {
+	fmt.Println(Tf("寿司", "寿司が食べたい。"))
 	// Output: 0.2
 }
 ```
 
 ### AllIdf
+
+AllIdf returns all IDF values in documents.
 
 ```go
 func ExampleAllIdf() {
@@ -59,38 +64,42 @@ func ExampleAllIdf() {
 
 ### Idf
 
+Idf retuns IDF value in documents.
+
 ```go
-func ExampleIdfValue_Idf() {
+func ExampleIdf() {
 	ds := []string{
 		"寿司が食べたい。",
 	}
-	idfs := NewIdf(ds)
-	fmt.Println(idfs.Idf("寿司"))
+	fmt.Println(Idf("寿司", ds))
 	// Output: 0
 }
 ```
 
 ### AllTfidf
 
+AllTfidf retuns all TF-IDF values in documents.
+
 ```go
-func ExampleAllIdf() {
+func ExampleAllTfidf() {
 	ds := []string{
 		"寿司が食べたい。",
 	}
-	fmt.Println(AllIdf(ds))
-	// Output: map[。:1 が:1 たい:1 寿司:1 食べ:1]
+	fmt.Println(AllTfidf(ds))
+	// Output: [map[。:0.2 が:0.2 たい:0.2 寿司:0.2 食べ:0.2]]
 }
 ```
 
 ### Tfidf
 
+Tfidf returns TF-IDF value in documents.
+
 ```go
-func ExampleTfidfValue_Tfidf() {
+func ExampleTfidf() {
 	ds := []string{
 		"寿司が食べたい。",
 	}
-	tfidfs := NewTfidf(ds)
-	fmt.Println(tfidfs.Tfidf("寿司"))
+	fmt.Println(Tfidf("寿司", ds[0], ds))
 	// Output: 0.2
 }
 ```
