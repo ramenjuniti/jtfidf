@@ -20,15 +20,6 @@ import (
 	"github.com/ikawaha/kagome/tokenizer"
 )
 
-// A TfValue is a map of TF values
-type TfValue map[string]float64
-
-// A IdfValue is a map of IDF values
-type IdfValue map[string]float64
-
-// A TfidfValue is a map of TF-IDF values
-type TfidfValue map[string]float64
-
 func splitTerm(d string) []string {
 	t := tokenizer.New()
 	tokens := t.Tokenize(d)
@@ -40,21 +31,6 @@ func splitTerm(d string) []string {
 	}
 
 	return terms
-}
-
-// NewTf returns a TfValue containing values
-func NewTf(d string) TfValue {
-	return AllTf(d)
-}
-
-// NewIdf returns a IdfValue containing values
-func NewIdf(ds []string) IdfValue {
-	return AllIdf(ds)
-}
-
-// NewTfidf returns a TfIdfValue containing values
-func NewTfidf(ds []string) TfidfValue {
-	return AllTfidf(ds)
 }
 
 // AllTf returns all TF values in a doucument
@@ -76,6 +52,21 @@ func AllTf(d string) map[string]float64 {
 	}
 
 	return tfs
+}
+
+// Tf returns TF value in a document
+func Tf(t, d string) float64 {
+	terms := splitTerm(d)
+	n := len(terms)
+	var count int
+
+	for _, term := range terms {
+		if t == term {
+			count++
+		}
+	}
+
+	return float64(count) / float64(n)
 }
 
 // AllIdf returns all IDF values in documents
@@ -112,31 +103,49 @@ func AllIdf(ds []string) map[string]float64 {
 	return idfs
 }
 
+// Idf retuns IDF value in documents
+func Idf(t string, ds []string) float64 {
+	n := len(ds)
+	termsList := make([][]string, n)
+	var df int
+
+	for i, d := range ds {
+		termsList[i] = splitTerm(d)
+	}
+
+	for i := 0; i < len(termsList); i++ {
+		for j := 0; j < len(termsList[i]); j++ {
+			if t == termsList[i][j] {
+				df++
+				break
+			}
+		}
+	}
+
+	if df == 0 {
+		return 0
+	}
+
+	return math.Log(float64(n) / float64(df))
+}
+
 // AllTfidf retuns all TF-IDF values in documents
-func AllTfidf(ds []string) map[string]float64 {
+func AllTfidf(ds []string) []map[string]float64 {
 	idfs := AllIdf(ds)
-	tfidfs := map[string]float64{}
+	tfidfs := []map[string]float64{}
 
 	for _, d := range ds {
+		tfidf := map[string]float64{}
 		for term, tf := range AllTf(d) {
-			tfidfs[term] = tf * (idfs[term] + 1)
+			tfidf[term] = tf * (idfs[term] + 1)
 		}
+		tfidfs = append(tfidfs, tfidf)
 	}
 
 	return tfidfs
 }
 
-// Tf returns TF value in a document
-func (tfv *TfValue) Tf(t string) float64 {
-	return (*tfv)[t]
-}
-
-// Idf retuns IDF value in documents
-func (idfv *IdfValue) Idf(t string) float64 {
-	return (*idfv)[t]
-}
-
 // Tfidf returns TF-IDF value in documents
-func (tfidfv *TfidfValue) Tfidf(t string) float64 {
-	return (*tfidfv)[t]
+func Tfidf(t, d string, ds []string) float64 {
+	return Tf(t, d) * (Idf(t, ds) + 1)
 }

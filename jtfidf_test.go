@@ -90,16 +90,6 @@ var tfCases = []struct {
 	},
 }
 
-func TestNewTf(t *testing.T) {
-	for _, c := range tfCases {
-		t.Run(c.name, func(t *testing.T) {
-			if got := NewTf(c.d); reflect.DeepEqual(c.want, got) {
-				t.Errorf("want %v, but got %v", c.want, got)
-			}
-		})
-	}
-}
-
 func TestAllTf(t *testing.T) {
 	for _, c := range tfCases {
 		t.Run(c.name, func(t *testing.T) {
@@ -118,19 +108,17 @@ func ExampleAllTf() {
 func TestTf(t *testing.T) {
 	for _, c := range tfCases {
 		t.Run(c.name, func(t *testing.T) {
-			tfs := NewTf(c.d)
 			for term, tf := range c.want {
-				if tfs.Tf(term) != tf {
-					t.Errorf("want %v: %v, but got %v: %v", term, tf, term, tfs.Tf(term))
+				if got := Tf(term, c.d); tf != got {
+					t.Errorf("want %v, but got %v", tf, got)
 				}
 			}
 		})
 	}
 }
 
-func ExampleTfValue_Tf() {
-	tfs := NewTf("寿司を食べたい。")
-	fmt.Println(tfs.Tf("寿司"))
+func ExampleTf() {
+	fmt.Println(Tf("寿司", "寿司が食べたい。"))
 	// Output: 0.2
 }
 
@@ -173,16 +161,6 @@ var idfCases = []struct {
 	},
 }
 
-func TestNewIdf(t *testing.T) {
-	for _, c := range idfCases {
-		t.Run(c.name, func(t *testing.T) {
-			if got := NewIdf(c.ds); reflect.DeepEqual(c.want, got) {
-				t.Errorf("want %v, but got %v", c.want, got)
-			}
-		})
-	}
-}
-
 func TestAllIdf(t *testing.T) {
 	for _, c := range idfCases {
 		t.Run(c.name, func(t *testing.T) {
@@ -204,41 +182,41 @@ func ExampleAllIdf() {
 func TestIdf(t *testing.T) {
 	for _, c := range idfCases {
 		t.Run(c.name, func(t *testing.T) {
-			idfs := NewIdf(c.ds)
-			for term, tf := range c.want {
-				if idfs.Idf(term) != tf {
-					t.Errorf("want %v: %v, but got %v: %v", term, tf, term, idfs.Idf(term))
+			for term, idf := range c.want {
+				if got := Idf(term, c.ds); idf != got {
+					t.Errorf("want %v, but got %v", idf, got)
 				}
 			}
 		})
 	}
 }
 
-func ExampleIdfValue_Idf() {
+func ExmapleIdf(t *testing.T) {
 	ds := []string{
 		"寿司が食べたい。",
 	}
-	idfs := NewIdf(ds)
-	fmt.Println(idfs.Idf("寿司"))
+	fmt.Println(Idf("寿司", ds))
 	// Output: 0
 }
 
 var tfidfCases = []struct {
 	name string
 	ds   []string
-	want map[string]float64
+	want []map[string]float64
 }{
 	{
 		name: "case1",
 		ds: []string{
 			"寿司が食べたい。",
 		},
-		want: map[string]float64{
-			"寿司": 0.2,
-			"が":  0.2,
-			"食べ": 0.2,
-			"たい": 0.2,
-			"。":  0.2,
+		want: []map[string]float64{
+			{
+				"寿司": 0.2,
+				"が":  0.2,
+				"食べ": 0.2,
+				"たい": 0.2,
+				"。":  0.2,
+			},
 		},
 	},
 	{
@@ -247,29 +225,28 @@ var tfidfCases = []struct {
 			"寿司が食べたい。",
 			"寿司が食べたい。",
 		},
-		want: map[string]float64{
-			"寿司": 0.2,
-			"が":  0.2,
-			"食べ": 0.2,
-			"たい": 0.2,
-			"。":  0.2,
+		want: []map[string]float64{
+			{
+				"寿司": 0.2,
+				"が":  0.2,
+				"食べ": 0.2,
+				"たい": 0.2,
+				"。":  0.2,
+			},
+			{
+				"寿司": 0.2,
+				"が":  0.2,
+				"食べ": 0.2,
+				"たい": 0.2,
+				"。":  0.2,
+			},
 		},
 	},
 	{
 		name: "case3",
 		ds:   []string{},
-		want: map[string]float64{},
+		want: []map[string]float64{},
 	},
-}
-
-func TestNewTfidf(t *testing.T) {
-	for _, c := range tfidfCases {
-		t.Run(c.name, func(t *testing.T) {
-			if got := NewTfidf(c.ds); reflect.DeepEqual(c.want, got) {
-				t.Errorf("want %v, but got %v", c.want, got)
-			}
-		})
-	}
 }
 
 func TestAllTfidf(t *testing.T) {
@@ -287,27 +264,31 @@ func ExampleAllTfidf() {
 		"寿司が食べたい。",
 	}
 	fmt.Println(AllTfidf(ds))
-	// Output: map[。:0.2 が:0.2 たい:0.2 寿司:0.2 食べ:0.2]
+	// Output: [map[。:0.2 が:0.2 たい:0.2 寿司:0.2 食べ:0.2]]
 }
 
 func TestTfidf(t *testing.T) {
 	for _, c := range tfidfCases {
 		t.Run(c.name, func(t *testing.T) {
-			tfidfs := NewTfidf(c.ds)
-			for term, tf := range c.want {
-				if tfidfs.Tfidf(term) != tf {
-					t.Errorf("want %v: %v, but got %v: %v", term, tf, term, tfidfs.Tfidf(term))
-				}
+			for i, d := range c.ds {
+				t.Run(fmt.Sprintf("%v", i), func(t *testing.T) {
+					for _, w := range c.want {
+						for term, tfidf := range w {
+							if got := Tfidf(term, d, c.ds); tfidf != got {
+								t.Errorf("want %v, but got %v", tfidf, got)
+							}
+						}
+					}
+				})
 			}
 		})
 	}
 }
 
-func ExampleTfidfValue_Tfidf() {
+func ExampleTfidf() {
 	ds := []string{
 		"寿司が食べたい。",
 	}
-	tfidfs := NewTfidf(ds)
-	fmt.Println(tfidfs.Tfidf("寿司"))
+	fmt.Println(Tfidf("寿司", ds[0], ds))
 	// Output: 0.2
 }
