@@ -191,7 +191,7 @@ func TestIdf(t *testing.T) {
 	}
 }
 
-func ExmapleIdf(t *testing.T) {
+func ExampleIdf() {
 	ds := []string{
 		"寿司が食べたい。",
 	}
