@@ -60,6 +60,10 @@ func Tf(t, d string) float64 {
 	n := len(terms)
 	var count int
 
+	if n == 0 {
+		return 0
+	}
+
 	for _, term := range terms {
 		if t == term {
 			count++
