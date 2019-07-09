@@ -33,7 +33,7 @@ func splitTerm(d string) []string {
 	return terms
 }
 
-// AllTf returns all TF values in a doucument
+// AllTf returns all TF values in d
 func AllTf(d string) map[string]float64 {
 	terms := splitTerm(d)
 	n := len(terms)
@@ -54,7 +54,7 @@ func AllTf(d string) map[string]float64 {
 	return tfs
 }
 
-// Tf returns TF value in a document
+// Tf returns t's TF value in d
 func Tf(t, d string) float64 {
 	terms := splitTerm(d)
 	n := len(terms)
@@ -69,7 +69,7 @@ func Tf(t, d string) float64 {
 	return float64(count) / float64(n)
 }
 
-// AllIdf returns all IDF values in documents
+// AllIdf returns all IDF values in ds
 func AllIdf(ds []string) map[string]float64 {
 	n := len(ds)
 	terms := []string{}
@@ -103,7 +103,7 @@ func AllIdf(ds []string) map[string]float64 {
 	return idfs
 }
 
-// Idf retuns IDF value in documents
+// Idf retuns t's IDF value in ds
 func Idf(t string, ds []string) float64 {
 	n := len(ds)
 	termsList := make([][]string, n)
@@ -129,7 +129,7 @@ func Idf(t string, ds []string) float64 {
 	return math.Log(float64(n) / float64(df))
 }
 
-// AllTfidf retuns all TF-IDF values in documents
+// AllTfidf retuns all TF-IDF values in ds
 func AllTfidf(ds []string) []map[string]float64 {
 	idfs := AllIdf(ds)
 	tfidfs := []map[string]float64{}
@@ -145,7 +145,7 @@ func AllTfidf(ds []string) []map[string]float64 {
 	return tfidfs
 }
 
-// Tfidf returns TF-IDF value in documents
+// Tfidf returns t's TF-IDF value in ds
 func Tfidf(t, d string, ds []string) float64 {
 	return Tf(t, d) * (Idf(t, ds) + 1)
 }
